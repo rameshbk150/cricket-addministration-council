@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket Live - Premium Subscription</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .hidden {
+      display: none;
+    }
+    .content, .admin-panel {
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 800px;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+    }
+    iframe, video {
+      width: 100%;
+      max-width: 720px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    input[type="file"] {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cricket Live - Premium Access</h1>
+
+  <!-- Payment Section -->
+  <div class="content" id="paymentSection">
+    <h2>Subscribe for ₹99 to Watch Live Cricket</h2>
+    <button id="payButton">Pay ₹99</button>
+  </div>
+
+  <!-- Premium Content Section -->
+  <div class="content hidden" id="premiumContent">
+    <h2>Live Cricket Stream</h2>
+    <iframe src="https://www.youtube.com/embed/your-live-stream" frameborder="0" allowfullscreen></iframe>
+    <h3>Video Highlights</h3>
+    <div id="highlights"></div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="content hidden" id="adminPanel">
+    <h2>Admin Panel</h2>
+    <input type="file" id="uploadFile" accept="video/*">
+    <button onclick="uploadVideo()">Upload Highlight</button>
+    <p id="uploadStatus"></p>
+  </div>
+
+  <script>
+    const isAdmin = true; // Set to true for admin access; dynamically decide in production
+    const paymentSection = document.getElementById('paymentSection');
+    const premiumContent = document.getElementById('premiumContent');
+    const adminPanel = document.getElementById('adminPanel');
+    const highlightsContainer = document.getElementById('highlights');
+
+    const highlights = []; // Simulated video storage
+
+    // Show admin panel if user is an admin
+    if (isAdmin) {
+      adminPanel.classList.remove('hidden');
+    }
+
+    // Simulate payment process
+    document.getElementById('payButton').addEventListener('click', () => {
+      const confirmed = confirm('Proceed with payment of ₹99?');
+      if (confirmed) {
+        alert('Payment successful! Enjoy premium content.');
+        paymentSection.classList.add('hidden');
+        premiumContent.classList.remove('hidden');
+        loadHighlights();
+      }
+    });
+
+    // Simulated video upload function
+    function uploadVideo() {
+      const fileInput = document.getElementById('uploadFile');
+      const file = fileInput.files[0];
+      if (file) {
+        const videoURL = URL.createObjectURL(file);
+        highlights.push(videoURL);
+        fileInput.value = ''; // Reset the file input
+        document.getElementById('uploadStatus').textContent = 'Video uploaded successfully!';
+        loadHighlights();
+      } else {
+        document.getElementById('uploadStatus').textContent = 'Please select a video to upload.';
+      }
+    }
+
+    // Load highlights
+    function loadHighlights() {
+      highlightsContainer.innerHTML = '';
+      highlights.forEach((videoURL, index) => {
+        const videoElement = document.createElement('video');
+        videoElement.src = videoURL;
+        videoElement.controls = true;
+        videoElement.title = `Highlight ${index + 1}`;
+        highlightsContainer.appendChild(videoElement);
+      });
+    }
+  </script>
+</body>
+</html>
